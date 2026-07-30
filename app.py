@@ -26,7 +26,7 @@ footer { visibility: hidden; }
 
 /* ---- HERO ---- */
 .tag { color: #4fd1a5; letter-spacing: 4px; font-size: 1rem; font-weight: 700; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 6.2rem; font-weight: 800; margin: 0.2rem 0 1rem 0; color: white; line-height: 1;letter-spacing: -2px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 6.5rem; font-weight: 700; margin: 0.3rem 0 1rem 0; color: white; line-height: 1.0; white-space: nowrap; }
 .hero-title .accent { color: #4fd1a5; }
 .hero-desc { font-size: 1.22rem; color: #cfd8d4; max-width: 620px; line-height: 1.8; }
 .disclaimer { background-color: #14231c; border-left: 3px solid #f0a500; padding: 0.9rem 1.2rem; border-radius: 6px; color: #ddd; font-size: 0.9rem; margin-top: 2rem; }
@@ -35,7 +35,7 @@ footer { visibility: hidden; }
 .abcde-wrap { background-color: #101d3a; padding: 4rem 6%; }
 .section-tag-dark { text-align:center; color: #7fb2e8; letter-spacing:3px; font-size:0.8rem; font-weight:600; }
 .section-title-dark { font-family: 'Playfair Display', serif; text-align:center; font-size: 2.4rem; font-weight:700; color:#fff; margin: 0.3rem 0 0.8rem 0; }
-.section-sub-dark { text-align:center; color:#c3cbe0; max-width:700px; margin:0 auto 2.5rem auto; }
+.section-sub-dark { text-align:center !important; color:#c3cbe0; width:100%; margin:0 auto 2.5rem auto; white-space: nowrap; display:block; }
 
 .abcde-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2rem; }
 .abcde-card { background:#fdf3d3; border-radius: 14px; padding: 1.8rem 1.2rem; text-align:center; }
@@ -47,7 +47,7 @@ footer { visibility: hidden; }
 .disease-wrap { background-color: #0e1a17; padding: 4rem 6%; }
 .section-tag { text-align:center; color: #4fd1a5; letter-spacing:3px; font-size:0.8rem; font-weight:600; }
 .section-title { font-family: 'Playfair Display', serif; text-align:center; font-size: 2.4rem; font-weight:700; color:#fff; margin: 0.3rem 0 0.8rem 0; }
-.section-sub { text-align:center; color:#c9cfcb; max-width:700px; margin:0 auto 2.5rem auto; }
+.section-sub { text-align:center !important; color:#c9cfcb; width:100%; margin:0 auto 2.5rem auto; white-space: nowrap; display:block; }
 
 .disease-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .disease-card { background:white; border-radius: 14px; padding: 1.6rem; }
