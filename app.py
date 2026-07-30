@@ -124,41 +124,76 @@ def crop_to_ratio(img, target_ratio=0.85):
     return img
 
 # ================= HERO SECTION =================
-st.markdown('<div class="section">', unsafe_allow_html=True)
-col1, col2 = st.columns([1.3, 1])
+# ================= SESSION STATE SETUP =================
+if 'page' not in st.session_state:
+    st.session_state.page = 'home'
+if 'uploaded_img' not in st.session_state:
+    st.session_state.uploaded_img = None
 
-with col1:
-    st.markdown("""
-        <p class="tag">PRELIMINARY SCREENING TOOL</p>
-        <p class="hero-title">Dermato<span class="accent">scan</span></p>
-        <p class="hero-desc">Upload a photo of a skin lesion and get an instant, explainable read on what it might be — trained on 10,015 clinically-labeled dermatoscopic images.</p>
-    """, unsafe_allow_html=True)
+# ================= HOME PAGE (HERO) =================
+if st.session_state.page == 'home':
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+    col1, col2 = st.columns([1.3, 1])
 
-    uploaded_file = st.file_uploader("", type=['jpg', 'jpeg', 'png'], label_visibility="collapsed")
+    with col1:
+        st.markdown("""
+            <p class="tag">PRELIMINARY SCREENING TOOL</p>
+            <p class="hero-title">Dermato<span class="accent">scan</span></p>
+            <p class="hero-desc">Upload a photo of a skin lesion and get an instant, explainable read on what it might be — trained on 10,015 clinically-labeled dermatoscopic images.</p>
+        """, unsafe_allow_html=True)
 
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file).convert('RGB')
-        st.image(img, use_container_width=True)
-        with st.spinner("Analyzing..."):
-            results, gradcam_img = predict(img)
-        st.image(gradcam_img, caption="AI Focus Area (Grad-CAM)", use_container_width=True)
-        st.markdown("#### Top 3 Possible Conditions")
-        for r in results:
-            st.write(f"**{r['name']}** ({r['code']}) — {r['confidence']}%")
-            st.progress(r['confidence'] / 100)
-        if results[0]['code'] in ['mel', 'bcc', 'akiec']:
-            st.error("⚠️ Potentially serious classification — consult a dermatologist promptly.")
+        uploaded_file = st.file_uploader("", type=['jpg', 'jpeg', 'png'], label_visibility="collapsed")
+
+        if uploaded_file is not None:
+            st.session_state.uploaded_img = Image.open(uploaded_file).convert('RGB')
+            st.session_state.page = 'results'
+            st.rerun()
+
+        st.markdown("""
+            <div class="disclaimer">This tool offers a preliminary read only — it is not a diagnosis. Always have any lesion of concern examined by a dermatologist.</div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        doctor_img = Image.open("doctor.jpg").convert("RGB")
+        doctor_img = crop_to_ratio(doctor_img, target_ratio=0.9)
+        st.image(doctor_img, use_container_width=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ================= RESULTS PAGE =================
+elif st.session_state.page == 'results':
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+
+    if st.button("← Back to Home"):
+        st.session_state.page = 'home'
+        st.session_state.uploaded_img = None
+        st.rerun()
+
+    st.markdown('<p class="hero-title" style="font-size: 3rem;">Analysis <span class="accent">Results</span></p>', unsafe_allow_html=True)
+
+    img = st.session_state.uploaded_img
+    with st.spinner("Analyzing..."):
+        results, gradcam_img = predict(img)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image(img, caption="Uploaded Image", width=350)
+    with col2:
+        st.image(gradcam_img, caption="AI Focus Area (Grad-CAM)", width=350)
+
+    st.markdown("#### Top 3 Possible Conditions")
+    for r in results:
+        st.write(f"**{r['name']}** ({r['code']}) — {r['confidence']}%")
+        st.progress(r['confidence'] / 100)
+
+    if results[0]['code'] in ['mel', 'bcc', 'akiec']:
+        st.error("⚠️ This result includes a potentially serious classification. Please consult a dermatologist promptly.")
 
     st.markdown("""
         <div class="disclaimer">This tool offers a preliminary read only — it is not a diagnosis. Always have any lesion of concern examined by a dermatologist.</div>
     """, unsafe_allow_html=True)
 
-with col2:
-    doctor_img = Image.open("doctor.jpg").convert("RGB")
-    doctor_img = crop_to_ratio(doctor_img, target_ratio=0.9)  # makes it shorter/squarer
-    st.image(doctor_img, use_container_width=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ================= ABCDE SECTION (single HTML block — dark blue bg + yellow cards) =================
 abcde = [
