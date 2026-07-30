@@ -195,7 +195,7 @@ elif st.session_state.page == 'results':
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-if st.session_state.page == 'home':
+
 
 # ================= ABCDE SECTION (single HTML block — dark blue bg + yellow cards) =================
 abcde = [
