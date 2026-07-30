@@ -25,10 +25,10 @@ footer { visibility: hidden; }
 .section { padding: 4rem 8% 4rem 8%; }
 
 /* ---- HERO ---- */
-.tag { color: #4fd1a5; letter-spacing: 3px; font-size: 0.8rem; font-weight: 600; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 4.6rem; font-weight: 700; margin: 0.3rem 0 1rem 0; color: white; line-height: 1.05; }
+.tag { color: #4fd1a5; letter-spacing: 4px; font-size: 1rem; font-weight: 700; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 6.2rem; font-weight: 800; margin: 0.2rem 0 1rem 0; color: white; line-height: 1;letter-spacing: -2px; }
 .hero-title .accent { color: #4fd1a5; }
-.hero-desc { font-size: 1.05rem; color: #cfd8d4; max-width: 500px; line-height: 1.6; }
+.hero-desc { font-size: 1.22rem; color: #cfd8d4; max-width: 620px; line-height: 1.8; }
 .disclaimer { background-color: #14231c; border-left: 3px solid #f0a500; padding: 0.9rem 1.2rem; border-radius: 6px; color: #ddd; font-size: 0.9rem; margin-top: 2rem; }
 
 /* ---- ABCDE SECTION (dark blue bg, light yellow cards) ---- */
