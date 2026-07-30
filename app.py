@@ -26,7 +26,16 @@ footer { visibility: hidden; }
 
 /* ---- HERO ---- */
 .tag { color: #4fd1a5; letter-spacing: 4px; font-size: 1rem; font-weight: 700; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 6.5rem; font-weight: 700; margin: 0.3rem 0 1rem 0; color: white; line-height: 1.0; white-space: nowrap; }
+.hero-title {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 7rem !important;
+    font-weight: 700 !important;
+    margin: 0.3rem 0 1rem 0 !important;
+    color: white !important;
+    line-height: 1.0 !important;
+    white-space: nowrap !important;
+    display: block !important;
+}
 .hero-title .accent { color: #4fd1a5; }
 .hero-desc { font-size: 1.22rem; color: #cfd8d4; max-width: 620px; line-height: 1.8; }
 .disclaimer { background-color: #14231c; border-left: 3px solid #f0a500; padding: 0.9rem 1.2rem; border-radius: 6px; color: #ddd; font-size: 0.9rem; margin-top: 2rem; }
