@@ -25,7 +25,7 @@ footer { visibility: hidden; }
 .section { padding: 4rem 8% 4rem 8%; }
 
 /* ---- HERO ---- */
-.tag { color: #4fd1a5; letter-spacing: 4px; font-size: 1rem; font-weight: 700; }
+.tag { color: #4fd1a5; letter-spacing: 3px; font-size: 0.8rem; font-weight: 600; }
 .hero-title {
     font-family: 'Playfair Display', serif !important;
     font-size: 7rem !important;
@@ -37,7 +37,7 @@ footer { visibility: hidden; }
     display: block !important;
 }
 .hero-title .accent { color: #4fd1a5; }
-.hero-desc { font-size: 1.22rem; color: #cfd8d4; max-width: 620px; line-height: 1.8; }
+.hero-desc { font-size: 1.05rem; color: #cfd8d4; max-width: 500px; line-height: 1.6; }
 .disclaimer { background-color: #14231c; border-left: 3px solid #f0a500; padding: 0.9rem 1.2rem; border-radius: 6px; color: #ddd; font-size: 0.9rem; margin-top: 2rem; }
 
 /* ---- ABCDE SECTION (dark blue bg, light yellow cards) ---- */
@@ -123,15 +123,16 @@ def crop_to_ratio(img, target_ratio=0.85):
         img = img.crop((0, top, w, top + new_h))
     return img
 
-# ================= HERO SECTION =================
 # ================= SESSION STATE SETUP =================
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
 if 'uploaded_img' not in st.session_state:
     st.session_state.uploaded_img = None
 
-# ================= HOME PAGE (HERO) =================
+# ================= HOME PAGE =================
 if st.session_state.page == 'home':
+
+    # ---- HERO SECTION ----
     st.markdown('<div class="section">', unsafe_allow_html=True)
     col1, col2 = st.columns([1.3, 1])
 
@@ -159,6 +160,61 @@ if st.session_state.page == 'home':
         st.image(doctor_img, use_container_width=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # ---- ABCDE SECTION ----
+    abcde = [
+        ("A", "Asymmetry", "One half of the lesion does not match the other."),
+        ("B", "Border", "Edges are irregular, notched, or poorly defined."),
+        ("C", "Color", "Uneven shading — mixes of brown, black, red, or white."),
+        ("D", "Diameter", "Larger than 6mm — roughly the size of a pencil eraser."),
+        ("E", "Evolving", "Any change in size, shape, color, or sensation over time.")
+    ]
+    abcde_cards_html = "".join([
+        f"""<div class="abcde-card">
+            <div class="abcde-letter">{letter}</div>
+            <div class="abcde-name">{name}</div>
+            <div class="abcde-desc">{desc}</div>
+        </div>""" for letter, name, desc in abcde
+    ])
+
+    st.markdown(f"""
+    <div class="abcde-wrap">
+        <p class="section-tag-dark">SELF-CHECK REFERENCE</p>
+        <p class="section-title-dark">The ABCDE Rule</p>
+        <p class="section-sub-dark">A widely-used dermatology mnemonic for spotting a mole worth having examined.</p>
+        <div class="abcde-grid">{abcde_cards_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---- DISEASE GUIDE SECTION ----
+    diseases = [
+        ("NV-01", "Melanocytic Nevi", "Common Mole", "Clusters of pigment-producing cells that form ordinary moles. Usually stable for years — the main thing to track is whether one starts changing.", "low"),
+        ("MEL-02", "Melanoma", "Malignant Melanoma", "A cancer of pigment-producing cells and the most dangerous common skin cancer. Early detection changes outcomes dramatically.", "high"),
+        ("BKL-03", "Benign Keratosis", "Seborrheic Keratosis & related", "Rough, waxy, 'stuck-on' looking patches. Harmless, but can visually mimic more serious lesions.", "low"),
+        ("BCC-04", "Basal Cell Carcinoma", "Most Common Skin Cancer", "Grows slowly and rarely spreads, but left untreated can damage surrounding skin and tissue.", "high"),
+        ("AKI-05", "Actinic Keratosis", "Sun-Damage Patch", "Rough, scaly patches from cumulative sun exposure. Considered pre-cancerous.", "moderate"),
+        ("VAS-06", "Vascular Lesions", "Angioma & related", "Growths involving blood vessels near the skin surface, appearing as red or purple marks. Almost always benign.", "low"),
+    ]
+    badge_labels = {"low": "LOW RISK", "moderate": "MODERATE RISK", "high": "HIGH RISK"}
+
+    disease_cards_html = "".join([
+        f"""<div class="disease-card">
+            <span class="disease-code">{code}</span>
+            <div class="disease-name">{name}</div>
+            <div class="disease-sub">{sub}</div>
+            <div class="disease-desc">{desc}</div>
+            <span class="badge {risk}">{badge_labels[risk]}</span>
+        </div>""" for code, name, sub, desc, risk in diseases
+    ])
+
+    st.markdown(f"""
+    <div class="disease-wrap">
+        <p class="section-tag">REFERENCE PANEL</p>
+        <p class="section-title">Conditions This Model Screens For</p>
+        <p class="section-sub">Seven categories, drawn from the HAM10000 dermatoscopic dataset — spanning benign, pre-cancerous, and malignant lesions.</p>
+        <div class="disease-grid">{disease_cards_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ================= RESULTS PAGE =================
 elif st.session_state.page == 'results':
@@ -194,60 +250,3 @@ elif st.session_state.page == 'results':
     """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-
-
-
-# ================= ABCDE SECTION (single HTML block — dark blue bg + yellow cards) =================
-abcde = [
-    ("A", "Asymmetry", "One half of the lesion does not match the other."),
-    ("B", "Border", "Edges are irregular, notched, or poorly defined."),
-    ("C", "Color", "Uneven shading — mixes of brown, black, red, or white."),
-    ("D", "Diameter", "Larger than 6mm — roughly the size of a pencil eraser."),
-    ("E", "Evolving", "Any change in size, shape, color, or sensation over time.")
-]
-abcde_cards_html = "".join([
-    f"""<div class="abcde-card">
-        <div class="abcde-letter">{letter}</div>
-        <div class="abcde-name">{name}</div>
-        <div class="abcde-desc">{desc}</div>
-    </div>""" for letter, name, desc in abcde
-])
-
-st.markdown(f"""
-<div class="abcde-wrap">
-    <p class="section-tag-dark">SELF-CHECK REFERENCE</p>
-    <p class="section-title-dark">The ABCDE Rule</p>
-    <p class="section-sub-dark">A widely-used dermatology mnemonic for spotting a mole worth having examined.</p>
-    <div class="abcde-grid">{abcde_cards_html}</div>
-</div>
-""", unsafe_allow_html=True)
-
-# ================= DISEASE GUIDE SECTION (single HTML block, with proper gaps) =================
-diseases = [
-    ("NV-01", "Melanocytic Nevi", "Common Mole", "Clusters of pigment-producing cells that form ordinary moles. Usually stable for years — the main thing to track is whether one starts changing.", "low"),
-    ("MEL-02", "Melanoma", "Malignant Melanoma", "A cancer of pigment-producing cells and the most dangerous common skin cancer. Early detection changes outcomes dramatically.", "high"),
-    ("BKL-03", "Benign Keratosis", "Seborrheic Keratosis & related", "Rough, waxy, 'stuck-on' looking patches. Harmless, but can visually mimic more serious lesions.", "low"),
-    ("BCC-04", "Basal Cell Carcinoma", "Most Common Skin Cancer", "Grows slowly and rarely spreads, but left untreated can damage surrounding skin and tissue.", "high"),
-    ("AKI-05", "Actinic Keratosis", "Sun-Damage Patch", "Rough, scaly patches from cumulative sun exposure. Considered pre-cancerous.", "moderate"),
-    ("VAS-06", "Vascular Lesions", "Angioma & related", "Growths involving blood vessels near the skin surface, appearing as red or purple marks. Almost always benign.", "low"),
-]
-badge_labels = {"low": "LOW RISK", "moderate": "MODERATE RISK", "high": "HIGH RISK"}
-
-disease_cards_html = "".join([
-    f"""<div class="disease-card">
-        <span class="disease-code">{code}</span>
-        <div class="disease-name">{name}</div>
-        <div class="disease-sub">{sub}</div>
-        <div class="disease-desc">{desc}</div>
-        <span class="badge {risk}">{badge_labels[risk]}</span>
-    </div>""" for code, name, sub, desc, risk in diseases
-])
-
-st.markdown(f"""
-<div class="disease-wrap">
-    <p class="section-tag">REFERENCE PANEL</p>
-    <p class="section-title">Conditions This Model Screens For</p>
-    <p class="section-sub">Seven categories, drawn from the HAM10000 dermatoscopic dataset — spanning benign, pre-cancerous, and malignant lesions.</p>
-    <div class="disease-grid">{disease_cards_html}</div>
-</div>
-""", unsafe_allow_html=True)
